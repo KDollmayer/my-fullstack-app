@@ -13,12 +13,7 @@ app.use(json())
 const port: number = parseInt(process.env.SERVER_MY_FULLSTACK_APP || '4000')
 const mongoUrl: string = process.env.MONGODB_URL || 'mongodb://localhost:27017'
 
-const MESSAGE_ITEMS: MessageItem[] = [{
-    _id: '12512',
-    userName: 'karlDollmayer',
-    messageText: 'hejsan hejsanhejsan',
-    timeStamp: new Date()
-}]
+
 
 app.get('/messages', async (req: Request, res: Response<MessageItem[]>) => {
     const messageItems = await loadMessages()
@@ -26,7 +21,7 @@ app.get('/messages', async (req: Request, res: Response<MessageItem[]>) => {
 })
 
 
-app.post('/messages', async async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
+app.post('/messages', async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
     const messageItem = req.body
     const saveMessage = await saveMessages(messageItem)
 

@@ -21,6 +21,7 @@ function App() {
   const waitingMessage: string = 'Waiting for messages...' 
 
   const createMessage = (messageText: string, userText: string): void => {
+    localStorage.setItem('username', JSON.stringify(userText));
     const messageItem: MessageItem = {
       userName: userText,
       messageText: messageText,
