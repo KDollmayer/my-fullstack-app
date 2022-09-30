@@ -1,6 +1,6 @@
 import MessageItem from "@my-fullstack-app/shared"
-import express, { Router, Request, Response } from "express"
-import { loadMessages, saveMessages } from "../models/db"
+import express, { Request, Response } from "express"
+import { loadMessages, saveMessages } from "../models/messages-repository"
 
 const messageController = express.Router()
 
@@ -12,7 +12,7 @@ messageController.get('/', async (req: Request, res: Response<MessageItem[]>) =>
 
 messageController.post('/', async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
     const messageItem = req.body
-    const saveMessage = await saveMessages(messageItem)
+    await saveMessages(messageItem)
 
     const messageItems = await loadMessages()
 

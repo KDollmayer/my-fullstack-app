@@ -2,7 +2,7 @@ import express, { Application, json, Request, Response } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 
-import { setUpMongoDb, } from './models/db'
+import { setUpMongoDb, } from './models/messages-repository'
 import messageController from './api/message-controller'
 
 dotenv.config()
