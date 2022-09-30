@@ -50,7 +50,7 @@ function App() {
          return( <> {
             messages.map((item) => {
               return (
-                <div key={item.id}>
+                <div key={item._id}>
                 <h3>{item.userName}</h3>
                 <p>{item.messageText}</p>
                 </div>

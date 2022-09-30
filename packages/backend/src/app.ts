@@ -10,29 +10,34 @@ const app: Application = express()
 app.use(cors())
 app.use(json())
 
-const port: number = parseInt(process.env.SERVER_MY_FULLSTACK_APP || '4003')
+const port: number = parseInt(process.env.SERVER_MY_FULLSTACK_APP || '4000')
+const mongoUrl: string = process.env.MONGODB_URL || 'mongodb://localhost:27017'
 
 const MESSAGE_ITEMS: MessageItem[] = [{
-    id: '12512',
+    _id: '12512',
     userName: 'karlDollmayer',
     messageText: 'hejsan hejsanhejsan',
     timeStamp: new Date()
 }]
 
-app.get('/messages', (req: Request, res: Response<MessageItem[]>) => {
-    res.send(MESSAGE_ITEMS)
+app.get('/messages', async (req: Request, res: Response<MessageItem[]>) => {
+    const messageItems = await loadMessages()
+    res.send(messageItems)
 })
 
 
-app.post('/messages', (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
+app.post('/messages', async async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
     const messageItem = req.body
-    messageItem.id = crypto.randomUUID()
-    MESSAGE_ITEMS.push(messageItem)
-    res.send(MESSAGE_ITEMS)
+    const saveMessage = await saveMessage(messageItem)
+
+    const messageItems = await loadMessages()
+
+    res.send(messageItems)
 
 })
 
 
-app.listen(port, function () {
+app.listen(port, async function () {
+    await setUpMongoDb(mongoUrl)
     console.log(`App is listening on port ${port} !`)
 })
