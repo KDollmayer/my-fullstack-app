@@ -18,4 +18,7 @@ export const saveMessage = async (messageItem: MessageItem): Promise<MessageItem
     return await loadMessages()
 }
 
+export const loadAllMessages = async (): Promise<MessageItem[]> => {
+    return await loadMessages()
+}
 

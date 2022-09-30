@@ -1,18 +1,23 @@
 import MessageItem from "@my-fullstack-app/shared"
 import express, { Request, Response } from "express"
-import { loadMessages } from "../models/messages-repository"
-import { saveMessage } from "../services/message-service"
+
+import { loadAllMessages, saveMessage } from "../services/message-service"
 
 const messageController = express.Router()
 
 messageController.get('/', async (req: Request, res: Response<MessageItem[]>) => {
-    const messageItems = await loadMessages()
-    res.send(messageItems)
+
+    res.send(await loadAllMessages())
 })
 
 
 messageController.post('/', async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
-    res.send(await saveMessage(req.body))
+    try {
+        res.send(await saveMessage(req.body))
+    } catch (e) {
+        res.sendStatus(400)
+    }
+
 })
 
 export default messageController
