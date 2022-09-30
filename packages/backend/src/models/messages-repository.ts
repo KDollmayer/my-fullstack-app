@@ -7,7 +7,7 @@ const messageSchema = new mongoose.Schema({
     timeStamp: { type: Date, required: true },
 
 })
-const messageModel = mongoose.model<MessageItem>('MessageItem', messageSchema)
+const messageModel = mongoose.model<MessageItem>('messages', messageSchema)
 
 export const setUpMongoDb = async (url: string) => {
     connect(url);
