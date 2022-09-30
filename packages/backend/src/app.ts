@@ -1,8 +1,9 @@
 import express, { Application, json, Request, Response } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import MessageItem from '@my-fullstack-app/shared'
-import { loadMessages, setUpMongoDb, saveMessages } from './db'
+
+import { setUpMongoDb, } from './models/db'
+import messageController from './api/message-controller'
 
 dotenv.config()
 const app: Application = express()
@@ -13,24 +14,7 @@ app.use(json())
 const port: number = parseInt(process.env.SERVER_MY_FULLSTACK_APP || '4000')
 const mongoUrl: string = process.env.MONGODB_URL || 'mongodb://localhost:27017'
 
-
-
-app.get('/messages', async (req: Request, res: Response<MessageItem[]>) => {
-    const messageItems = await loadMessages()
-    res.send(messageItems)
-})
-
-
-app.post('/messages', async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
-    const messageItem = req.body
-    const saveMessage = await saveMessages(messageItem)
-
-    const messageItems = await loadMessages()
-
-    res.send(messageItems)
-
-})
-
+app.use('/messages', messageController)
 
 app.listen(port, async function () {
     await setUpMongoDb(mongoUrl)
