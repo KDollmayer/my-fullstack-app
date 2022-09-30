@@ -2,7 +2,7 @@ import express, { Application, json, Request, Response } from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import MessageItem from '@my-fullstack-app/shared'
-import crypto from 'crypto'
+import { loadMessages, setUpMongoDb, saveMessages } from './db'
 
 dotenv.config()
 const app: Application = express()
@@ -28,7 +28,7 @@ app.get('/messages', async (req: Request, res: Response<MessageItem[]>) => {
 
 app.post('/messages', async async (req: Request<MessageItem>, res: Response<MessageItem[]>) => {
     const messageItem = req.body
-    const saveMessage = await saveMessage(messageItem)
+    const saveMessage = await saveMessages(messageItem)
 
     const messageItems = await loadMessages()
 
