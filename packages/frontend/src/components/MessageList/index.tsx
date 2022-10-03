@@ -14,12 +14,14 @@ const fetchMessages =async (): Promise<MessageItem[]> => {
 
 
 export default function MessageList() {
-  const [messages, setMessages] = useState<MessageItem[]>([])
-  const [error, setError] = useState<string | undefined>()
   const [messageText, setMessageText] = useState<string>('')
   const [userText, setUserText] = useState<string>('')
+  const [messages, setMessages] = useState<MessageItem[]>([])
+  const [error, setError] = useState<string | undefined>()
+  
 
   const waitingMessage: string = 'Waiting for messages...' 
+
 
   const createMessage = (messageText: string, userText: string): void => {
     localStorage.setItem('username', JSON.stringify(userText));
@@ -34,8 +36,9 @@ export default function MessageList() {
       setMessages(res.data)
       setMessageText('')
    })
-    
   }
+
+ 
   
   useEffect(() => {
     fetchMessages().then(setMessages).catch((error) => {
@@ -45,38 +48,47 @@ export default function MessageList() {
     })
   }, [])
 
-  const output = () => {
-      if (error) {
-        return( <div > <h2>{error}</h2></div> )
-      } else if (messages) {
-         return( <> {
-            messages.map((item) => {
-              return (
-                <s.ItemDiv key={item._id}>
-                <s.H2>{item.userName}</s.H2>
-                <s.P>{item.messageText}</s.P>
-                </s.ItemDiv>
-              )
-            })
-          }
-          </>
-           )
-      } else {
-        return ( <div>
-          <h2>{waitingMessage}</h2>
-        </div> )
-      }
+ 
+
+  function output() {
+    if (error) {
+      return (<div> <h2>{error}</h2></div>)
+    } else if (messages) {
+      return (<> {messages.map((item) => {
+        return (
+
+
+          <s.ItemDivGreen style={{background: item.userName === userText ? 'green': 'blue'}} key={item._id}>
+            <s.H2>{item.userName}</s.H2>
+            <s.P>{item.messageText}</s.P>
+          </s.ItemDivGreen>
+        )
+      })}
+      </>
+      )
+    } else {
+      return (<div>
+        <h2>{waitingMessage}</h2>
+      </div>)
+    }
   }
     return (
-      <s.MessageDiv>
+      
+      <><s.MessageDiv>
 
-{output()}
+        {output()}
 
-<div className=''>
-  <input type="text" placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
-  <input type="text" placeholder='Username' required value={userText} onChange={(e) => setUserText(e.target.value)} />
-  <button onClick={(e) => createMessage(messageText, userText)}>Send</button>
-</div>
+
+
       </s.MessageDiv>
+      <s.InputDiv>
+      <s.InputText type="text" placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
+      <s.InputUser type="text" placeholder='Username' required value={userText} onChange={(e) => setUserText(e.target.value)} />
+      <s.SendButton onClick={(e) => createMessage(messageText, userText)}> Send </s.SendButton>
+      </s.InputDiv>
+      
+      
+      </> 
+      
     )
   }

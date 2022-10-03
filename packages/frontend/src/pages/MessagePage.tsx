@@ -7,13 +7,16 @@ import MessageList from '../components/MessageList'
 
 
 
+
+
 export default function HomePage() {
  
   return (
      <MainContainer>
       <Header  />
       <MainContent>
-        <MessageList/>
+        <MessageList />
+        
       
      
     </MainContent>
