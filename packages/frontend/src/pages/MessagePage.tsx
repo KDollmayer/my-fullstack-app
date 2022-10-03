@@ -1,7 +1,10 @@
 import MessageItem from '@my-fullstack-app/shared'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import Header from '../components/Header/Header'
+import Header from '../components/Header'
+import MainContainer from '../components/MainContainer'
+import MainContent from '../components/MainContent'
+
 
 axios.defaults.baseURL = process.env.REACT_APP_API_KEY
 
@@ -65,15 +68,23 @@ export default function HomePage() {
       }
   }
   return (
-    <div>
-      <Header/>
+     <MainContainer>
+      <Header  />
+      <MainContent>
+        
       {output()}
 
-    <div className=''>
+      <div className=''>
         <input type="text" placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
         <input type="text" placeholder='Username' required value={userText} onChange={(e) => setUserText(e.target.value)} />
         <button onClick={(e) => createMessage(messageText, userText)}>Send</button>
       </div>
-      </div>
+     
+    </MainContent>
+    </MainContainer>
+      
+      
+
+    
   )
 }
