@@ -7,6 +7,7 @@ import styled from "styled-components";
     justify-content:center;
     align-items:center;
     color: #1A1423;
+    text-align:center;
  `
 
  export const H1 = styled.h1`
