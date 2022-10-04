@@ -1,4 +1,4 @@
-import MessageItem from '@my-fullstack-app/shared'
+import {MessageItem} from '@my-fullstack-app/shared'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 

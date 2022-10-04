@@ -1,5 +1,5 @@
 import mongoose, { connect } from 'mongoose'
-import MessageItem from '@my-fullstack-app/shared'
+import { MessageItem } from '@my-fullstack-app/shared'
 
 const messageSchema = new mongoose.Schema({
     userName: { type: String, required: true },
@@ -9,10 +9,7 @@ const messageSchema = new mongoose.Schema({
 })
 const messageModel = mongoose.model<MessageItem>('messages', messageSchema)
 
-export const setUpMongoDb = async (url: string) => {
-    connect(url);
 
-}
 
 export const loadMessages = async (): Promise<MessageItem[]> => {
     return messageModel.find({}).exec()

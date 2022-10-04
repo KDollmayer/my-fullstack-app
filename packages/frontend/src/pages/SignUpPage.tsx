@@ -2,6 +2,9 @@ import React from 'react'
 
 export default function SignUpPage() {
   return (
-    <>hej hej signup</>
+    <div>
+      <input type="text"  />
+
+    </div>
   )
 }

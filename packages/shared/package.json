@@ -2,7 +2,11 @@
   "name": "@my-fullstack-app/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "src/message-item.ts",
+  "type": "module",
+  "exports": {
+    "./*": "./src/*"
+  },
+  "main": "./src/index.ts",
   "scripts": {
     "build": "tsc"
   },

@@ -1,4 +1,4 @@
-import MessageItem from "@my-fullstack-app/shared"
+import { MessageItem } from "@my-fullstack-app/shared"
 import express, { Request, Response } from "express"
 
 import { loadAllMessages, saveMessage } from "../services/message-service"

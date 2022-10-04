@@ -1,4 +1,4 @@
-import MessageItem from "@my-fullstack-app/shared";
+import { MessageItem } from "@my-fullstack-app/shared";
 import { resolve } from "path";
 import { loadMessages, saveMessages } from "../models/messages-repository";
 
