@@ -54,16 +54,38 @@ export default function MessageList() {
     if (error) {
       return (<div> <h2>{error}</h2></div>)
     } else if (messages) {
-      return (<> {messages.map((item) => {
-        return (
+      return (<> {messages.map((item) => (
+
+       
+       
+
+            <> 
+
+           {item.userName === userText && 
+
+              <s.ItemDivGreen key={item._id} >
+              <s.H2  >{item.userName}</s.H2>
+              <s.P>{item.messageText}</s.P>
+              </s.ItemDivGreen>
+           
+           }
+           {item.userName !== userText && 
+
+              <s.ItemDiv key={item._id} >
+              <s.H2 >{item.userName}</s.H2>
+              <s.P>{item.messageText}</s.P>
+              </s.ItemDiv>
+           
+           }
+            
+          
+            </>
+      )
+         
 
 
-          <s.ItemDivGreen style={{background: item.userName === userText ? 'green': 'blue'}} key={item._id}>
-            <s.H2>{item.userName}</s.H2>
-            <s.P>{item.messageText}</s.P>
-          </s.ItemDivGreen>
-        )
-      })}
+        
+      )}
       </>
       )
     } else {
