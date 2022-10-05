@@ -23,6 +23,10 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
+export const userExists = async (username: string): Promise<UserItem | null> => {
+    return await userModel.findOne({ userName: username }).exec()
+}
+
 export const saveUser = async (userItem: UserItem): Promise<void> => {
     userItem.password = await bcrypt.hash(userItem.password, salt)
     const newModel = new userModel(userItem)
@@ -30,6 +34,8 @@ export const saveUser = async (userItem: UserItem): Promise<void> => {
 
 
 }
+
+
 
 
 
