@@ -18,6 +18,7 @@ const mongoUrl: string = process.env.MONGODB_URL || 'mongodb://localhost:27017'
 
 app.use('/', authenticateToken);
 app.use('/create-user', userController)
+
 app.use('/login', loginUser)
 
 app.use('/messages', requireLogin, messageController)

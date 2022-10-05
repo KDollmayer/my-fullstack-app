@@ -1,14 +1,32 @@
+import axios from 'axios'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import MainContent from '../MainContent'
 import * as s from './styles'
 
+
+ 
+
 export default function Login() {
-
+  const navigate = useNavigate()
     const [user, setUser] = useState<string>('')
+    const [isLogedIn, setIsLogedIn] = useState<boolean>(false)
     const [userPassword, setUserPassword] = useState<string>('')
+    
 
-    function loginUser(user: string, userPassword: string): void {
+    const  loginUser = async (user: string, userPassword: string): Promise<void> =>  {
+      
+      const loginResponse = await axios.post("/login", {
+        username: user.toLocaleLowerCase(),
+        password: userPassword,
+      });
+      if (loginResponse && loginResponse.status === 200) {
+        localStorage.setItem("jwt", loginResponse.data);
+        setIsLogedIn(true)
+        navigate('/messages')
         
+        
+      }
     }
 
   return (

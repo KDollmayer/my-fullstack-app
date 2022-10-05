@@ -43,7 +43,7 @@ export const loginUser = async (
     res: Response<string>
 ) => {
     const user = req.body;
-
+    console.log(user)
     const userInfo = await performUserAuthentication(user);
     if (!userInfo) {
         return res.sendStatus(403);
@@ -64,7 +64,7 @@ const performUserAuthentication = async (
 ): Promise<UserItem | null> => {
 
     const userInfo = await authUser(user.username, user.password);
-
+    console.log(user.username)
 
     // TODO Use bcrypt to check that password is maching
     return userInfo;

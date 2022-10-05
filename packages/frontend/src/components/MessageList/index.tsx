@@ -6,6 +6,17 @@ import * as s from './styles'
 
 axios.defaults.baseURL = process.env.REACT_APP_API_KEY
 
+axios.interceptors.request.use((config) => {
+  if (!config?.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("jwt");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
+
 const fetchMessages =async (): Promise<MessageItem[]> => {
    const response = await axios.get<MessageItem[]>('/messages')
    return response.data

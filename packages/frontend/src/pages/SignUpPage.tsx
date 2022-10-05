@@ -8,7 +8,7 @@ export default function SignUpPage() {
 
   return (
     <MainContainer>
-      <Header/>
+      
       <SignUp/>
       
     </MainContainer>
