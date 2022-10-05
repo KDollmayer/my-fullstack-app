@@ -1,5 +1,5 @@
 import { UserItem } from "@my-fullstack-app/shared";
-import { saveUser, userExists, userModel } from "../models/user-reposetory";
+import { saveUser, userExists } from "../models/user-reposetory";
 
 
 
@@ -9,7 +9,7 @@ export const saveUsers = async (userItem: UserItem): Promise<void> => {
 
 
 
-    const user = userItem.userName
+    const user = userItem.username
     const userInfo = await userExists(user)
 
 

@@ -8,23 +8,25 @@ dotenv.config()
 const salt = parseInt(process.env.SALT_NUM || "10")
 
 const userSchema = new mongoose.Schema({
-    userName: { type: String, required: true },
+    username: { type: String, required: true },
     password: { type: String, required: true }
 })
 
 
 export const userModel = mongoose.model<UserItem>('users', userSchema)
 
-userSchema.pre('save', async function (next) {
 
-    if (this.modifiedPaths().includes("password")) {
-        this.password = await bcrypt.hash(this.password, salt);
-    }
-    next();
-})
 
 export const userExists = async (username: string): Promise<UserItem | null> => {
-    return await userModel.findOne({ userName: username }).exec()
+    return await userModel.findOne({ username }).exec()
+}
+export const authUser = async (username: string, password: string): Promise<UserItem | null> => {
+    const user = await userModel.findOne({ username }).exec()
+    console.log(username, password)
+
+    console.log(user)
+
+    return user && password && (await bcrypt.compare(password, user.password)) ? user : null
 }
 
 export const saveUser = async (userItem: UserItem): Promise<void> => {
