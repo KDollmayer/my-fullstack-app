@@ -9,11 +9,13 @@ import { saveUsers } from "../services/user-server"
 
 const userController = express.Router()
 
-userController.post('/', async (req: Request<UserItem>, res: Response<void>) => {
+userController.post('/', async (req: Request<UserItem>, res: Response) => {
     try {
         res.send(await saveUsers(req.body))
+
     } catch (e) {
-        res.sendStatus(409)
+
+        res.status(409).send({ error: (e as Error).message })
     }
 })
 

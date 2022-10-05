@@ -13,9 +13,10 @@ const userSchema = new mongoose.Schema({
 })
 
 
-const userModel = mongoose.model<UserItem>('users', userSchema)
+export const userModel = mongoose.model<UserItem>('users', userSchema)
 
 userSchema.pre('save', async function (next) {
+
     if (this.modifiedPaths().includes("password")) {
         this.password = await bcrypt.hash(this.password, salt);
     }
@@ -23,8 +24,11 @@ userSchema.pre('save', async function (next) {
 })
 
 export const saveUser = async (userItem: UserItem): Promise<void> => {
+    userItem.password = await bcrypt.hash(userItem.password, salt)
     const newModel = new userModel(userItem)
     newModel.save()
+
+
 }
 
 
