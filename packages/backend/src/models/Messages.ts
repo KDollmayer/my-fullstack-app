@@ -1,8 +1,9 @@
-import mongoose, { connect } from 'mongoose'
+import mongoose from 'mongoose'
 import { MessageItem } from '@my-fullstack-app/shared'
 
 const messageSchema = new mongoose.Schema({
-    userName: { type: String, required: true },
+    userId: { type: String, required: true },
+    username: { type: String, required: true },
     messageText: { type: String, required: true },
     timeStamp: { type: Date, required: true },
 
@@ -16,7 +17,8 @@ export const loadMessages = async (): Promise<MessageItem[]> => {
 
 
 }
-export const saveMessages = async (messageItem: MessageItem): Promise<void> => {
-    const newModel = new messageModel(messageItem)
-    newModel.save()
+
+export const createNewMessage = async (messageItem: MessageItem): Promise<void> => {
+    messageModel.create(messageItem)
+
 }

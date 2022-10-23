@@ -9,6 +9,17 @@ import * as s from './styles'
 
 axios.defaults.baseURL = process.env.REACT_APP_API_KEY
 
+axios.interceptors.request.use((config) => {
+  if (!config?.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("jwt_token");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
+
 
 
 export default function SignUp() {
@@ -24,13 +35,13 @@ export default function SignUp() {
     
     
       const userItem: UserItem = {
-        username: user.toLocaleLowerCase(),
+        username: user,
         password: passwordText
       }
       
 
 
-        axios.post<UserItem>('/create-user', userItem).then((res) => navigate('/login')).catch((error) => alert(error.response.data.error))
+        axios.post<UserItem>('/users', userItem).then((res) => navigate('/login')).catch((error) => alert(error.response.data.error))
 
       
   }

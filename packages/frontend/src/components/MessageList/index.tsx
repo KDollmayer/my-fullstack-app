@@ -1,6 +1,7 @@
-import {MessageItem} from '@my-fullstack-app/shared'
+import {MessageItem, UserItem} from '@my-fullstack-app/shared'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import * as s from './styles'
 
@@ -10,7 +11,7 @@ axios.interceptors.request.use((config) => {
   if (!config?.headers) {
     config.headers = {};
   }
-  const jwt = localStorage.getItem("jwt");
+  const jwt = localStorage.getItem("access_token");
   if (jwt) {
     config.headers["authorization"] = `Bearer ${jwt}`;
   }
@@ -22,29 +23,36 @@ const fetchMessages =async (): Promise<MessageItem[]> => {
    return response.data
 } 
 
+const fetchMe =async (): Promise<UserItem | null> => {
+  const response = await axios.get<UserItem>('/users/me')
+  console.log(response.data)
+    return response.data
+}
+
+
 
 
 export default function MessageList() {
   const [messageText, setMessageText] = useState<string>('')
-  const [userText, setUserText] = useState<string>('')
+  const [userText, setUserText] = useState<UserItem | null>()
   const [messages, setMessages] = useState<MessageItem[]>([])
   const [error, setError] = useState<string | undefined>()
+  const navigate = useNavigate()
   
 
   const waitingMessage: string = 'Waiting for messages...' 
 
 
-  const createMessage = (messageText: string, userText: string): void => {
-    localStorage.setItem('username', JSON.stringify(userText));
-    const messageItem: MessageItem = {
-      userName: userText,
-      messageText: messageText,
-      timeStamp: new Date()
+  const createMessage = (messageText: string, ): void => {
+    
+    const messageItem: string = messageText
+     
+     
   
-    }
-   axios.post<MessageItem[]>('/messages', messageItem)
-   .then((res) => {
-      setMessages(res.data)
+    
+   axios.post<MessageItem[]>('/messages', {messageItem})
+   .then(async (res)  => {
+      setMessages(await fetchMessages())
       setMessageText('')
    })
   }
@@ -52,9 +60,17 @@ export default function MessageList() {
  
   
   useEffect(() => {
+    fetchMe().then(setUserText).catch((error) => {
+      setUserText(null)
+      setError('Something went wrong with fetching user...')
+
+    })
     fetchMessages().then(setMessages).catch((error) => {
       setMessages([])
       setError('Something went wrong with fetching messages...')
+
+            
+     
 
     })
   }, [])
@@ -72,19 +88,20 @@ export default function MessageList() {
 
             <> 
 
-           {item.userName === userText && 
+           {item.username === userText?.username && 
 
               <s.ItemDivGreen key={item._id} >
-              <s.H2  >{item.userName}</s.H2>
+              <s.H2  >{item.username}</s.H2>
               <s.P>{item.messageText}</s.P>
               </s.ItemDivGreen>
            
            }
-           {item.userName !== userText && 
+           {item.username !== userText?.username && 
 
               <s.ItemDiv key={item._id} >
-              <s.H2 >{item.userName}</s.H2>
-              <s.P>{item.messageText}</s.P>
+              <s.H2  >{item.username} </s.H2>
+              <s.P  >{item.messageText}</s.P>
+              
               </s.ItemDiv>
            
            }
@@ -116,8 +133,8 @@ export default function MessageList() {
       </s.MessageDiv>
       <s.InputDiv>
       <s.InputText type="text" placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
-      <s.InputUser type="text" placeholder='Username' required value={userText} onChange={(e) => setUserText(e.target.value)} />
-      <s.SendButton onClick={(e) => createMessage(messageText, userText)}> Send </s.SendButton>
+     
+      <s.SendButton onClick={(e) => createMessage(messageText)}> Send </s.SendButton>
       </s.InputDiv>
       
       

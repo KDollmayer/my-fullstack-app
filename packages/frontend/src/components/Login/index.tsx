@@ -1,11 +1,27 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import MainContent from '../MainContent'
+import Logo from '../Logo'
+import Image from '../Image'
+
 import * as s from './styles'
+import { UserItem } from '@my-fullstack-app/shared'
 
 
- 
+axios.defaults.baseURL = process.env.REACT_APP_API_KEY
+
+axios.interceptors.request.use((config) => {
+  if (!config?.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("jwt_token");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
+
+
 
 export default function Login() {
   const navigate = useNavigate()
@@ -14,28 +30,47 @@ export default function Login() {
     const [userPassword, setUserPassword] = useState<string>('')
     
 
-    const  loginUser = async (user: string, userPassword: string): Promise<void> =>  {
+    const  loginUser = async (user: string, userPassword: string): Promise<UserItem | null> =>  {
       
-      const loginResponse = await axios.post("/login", {
+      
+   
+      
+      const loginResponse = await axios.post("/auth", {
         username: user.toLocaleLowerCase(),
         password: userPassword,
       });
-      if (loginResponse && loginResponse.status === 200) {
-        localStorage.setItem("jwt", loginResponse.data);
+      console.log(loginResponse.data)
+      if (loginResponse?.status === 200) {
+
+        localStorage.setItem('jwt_token', loginResponse.data)
         setIsLogedIn(true)
         navigate('/messages')
-        
-        
-      }
+     
+      } 
+      return null
+      
     }
 
   return (
-    <MainContent>
+  
+    <s.MsnLoginDiv>
+   
+    <s.MessengerWindow>
+        
+        <s.Head><Logo/></s.Head>
+        <s.HighDiv><Image/></s.HighDiv>
         <s.InputDiv>
-            <s.InputUser value={user} onChange={(e) => setUser(e.target.value)} placeholder='Username'/>
-            <s.InputUser value={userPassword} onChange={(e) => setUserPassword(e.target.value)} placeholder='Password'/>
-            <s.Button onClick={(e) => loginUser(user, userPassword)}> Log In </s.Button>
-        </s.InputDiv>
-    </MainContent>
+      <s.Lable>Username</s.Lable>
+      <s.InputUser value={user} onChange={(e) => setUser(e.target.value)} placeholder='Username'/>
+      </s.InputDiv>
+      <s.InputDiv>
+        <s.Lable>Password</s.Lable>
+        <s.InputUser value={userPassword} onChange={(e) => setUserPassword(e.target.value)} placeholder='Password'/>
+      </s.InputDiv>
+      <s.Button onClick={(e) => loginUser(user, userPassword)}> Log In </s.Button>
+   
+
+    </s.MessengerWindow>
+    </s.MsnLoginDiv>
   )
 }
