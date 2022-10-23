@@ -1,36 +1,13 @@
-
-
 import styled from "styled-components";
 
 
-export const InputMessage = styled.textarea`
-width:24em;
-height:7em;
+export const InputUser = styled.input`
+width:12em;
 padding:3px;
-border-radius:10px;
 
 `
-export const DivRight = styled.div`
-    width:50%;
-    overflow-wrap: break-word;
-    
-    margin:1px 14em;
-`
-export const DivLeft = styled.div`
-    width:49%;
-    overflow-wrap: break-word;
-    margin:3px;
-    
-    
-`
-export const Ptime = styled.p`
-font-size:10px;
-margin:;
-`
 
-
-
-export const MsnMessengerDiv = styled.div`
+export const MsnLoginDiv = styled.div`
 display: flex;
 flex-direction:column;
 justify-content:center;
@@ -41,53 +18,13 @@ padding:5px;
 
 `
 
-export const messageDiv = styled.div`
-    display:flex;
-    
-    flex-direction:column;
-   
-    background: #fff;
-    width:30em;
-    overflow-y: scroll;
-    margin:2px 7em 10px 10px;
-    box-shadow: 0px 4px 4px -3px  black;
-    border-radius:10px;
-
-`
-
-export const UserMessage = styled.div`
- 
-
- display:flex;
- flex-direction:column;
- 
- text-align:;
- justify-content: center; 
- float:right;
- justify-content:flex-end;
-`
-export const UserMessage1 = styled.div`
-
-
- 
- 
- display:flex;
- flex-direction:column;
- text-align:;
- justify-content: center; 
- justify-content:flex-start;
-
-`
-
 export const MessengerWindow = styled.div`
-    margin-top:5em;
     display: flex;
     flex-direction:column;
     align-items:center;
-    width:45em;
+    width:20em;
     height:35em;
     box-shadow: 0px 8px 6px -3px  black;
-   
     
     border-radius:4px;
     
@@ -128,10 +65,9 @@ export const HighDiv = styled.div`
 `
 export const InputDiv = styled.div`
     display:flex;
-    flex-direction:row;
+    flex-direction:column;
     padding:3px;
     margin:3px;
-    margin-right:7em;
     
 `
 export const Button = styled.button`

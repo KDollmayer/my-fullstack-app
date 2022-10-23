@@ -1,6 +1,7 @@
 export interface MessageItem1 {
     _id?: string,
-    userName: string,
+    userId: string,
+    username: string
     messageText: string,
     timeStamp: Date,
 

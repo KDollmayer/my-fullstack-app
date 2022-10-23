@@ -1,39 +1,59 @@
-import {MessageItem} from '@my-fullstack-app/shared'
+import {MessageItem, UserItem} from '@my-fullstack-app/shared'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Logo from '../Logo'
 
 import * as s from './styles'
 
 axios.defaults.baseURL = process.env.REACT_APP_API_KEY
+
+axios.interceptors.request.use((config) => {
+  if (!config?.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("access_token");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
 
 const fetchMessages =async (): Promise<MessageItem[]> => {
    const response = await axios.get<MessageItem[]>('/messages')
    return response.data
 } 
 
+const fetchMe =async (): Promise<UserItem | null> => {
+  const response = await axios.get<UserItem>('/users/me')
+ 
+    return response.data
+}
+
+
 
 
 export default function MessageList() {
   const [messageText, setMessageText] = useState<string>('')
-  const [userText, setUserText] = useState<string>('')
+  const [userText, setUserText] = useState<UserItem | null>()
   const [messages, setMessages] = useState<MessageItem[]>([])
   const [error, setError] = useState<string | undefined>()
+  const navigate = useNavigate()
   
 
   const waitingMessage: string = 'Waiting for messages...' 
 
 
-  const createMessage = (messageText: string, userText: string): void => {
-    localStorage.setItem('username', JSON.stringify(userText));
-    const messageItem: MessageItem = {
-      userName: userText,
-      messageText: messageText,
-      timeStamp: new Date()
+  const createMessage = (messageText: string, ): void => {
+    
+    const messageItem: string = messageText
+     
+     
   
-    }
-   axios.post<MessageItem[]>('/messages', messageItem)
-   .then((res) => {
-      setMessages(res.data)
+    
+   axios.post<MessageItem[]>('/messages', {messageItem})
+   .then(async (res)  => {
+      setMessages(await fetchMessages())
       setMessageText('')
    })
   }
@@ -41,9 +61,17 @@ export default function MessageList() {
  
   
   useEffect(() => {
+    fetchMe().then(setUserText).catch((error) => {
+      setUserText(null)
+      setError('Something went wrong with fetching user...')
+
+    })
     fetchMessages().then(setMessages).catch((error) => {
       setMessages([])
       setError('Something went wrong with fetching messages...')
+
+            
+     
 
     })
   }, [])
@@ -54,16 +82,48 @@ export default function MessageList() {
     if (error) {
       return (<div> <h2>{error}</h2></div>)
     } else if (messages) {
-      return (<> {messages.map((item) => {
-        return (
+      return (<> {messages.map((item) => (
+
+       
+       
+
+            < > 
+
+           {item.username === userText?.username && 
+
+              <s.UserMessage key={item._id} >
+                <s.DivRight>
+                <h2 >{item.username}</h2>
+              <p>{item.messageText}</p>
+              <s.Ptime>{item.timeStamp as any}</s.Ptime>
+                </s.DivRight>
+              
+              </s.UserMessage>
+           
+           }
+           {item.username !== userText?.username && 
+
+              <s.UserMessage1 key={item._id} >
+
+              <s.DivLeft>
+              <h2  >{item.username} </h2>
+              <p   >{item.messageText}</p>
+              <s.Ptime>{item.timeStamp as any}</s.Ptime>
+              </s.DivLeft>
+              
+              
+              </s.UserMessage1>
+           
+           }
+            
+          
+            </>
+      )
+         
 
 
-          <s.ItemDivGreen style={{background: item.userName === userText ? 'green': 'blue'}} key={item._id}>
-            <s.H2>{item.userName}</s.H2>
-            <s.P>{item.messageText}</s.P>
-          </s.ItemDivGreen>
-        )
-      })}
+        
+      )}
       </>
       )
     } else {
@@ -74,18 +134,26 @@ export default function MessageList() {
   }
     return (
       
-      <><s.MessageDiv>
+      <><s.MsnMessengerDiv>
+        <s.MessengerWindow>
+        <s.Head><Logo/></s.Head>
+          <s.messageDiv>
 
-        {output()}
+          {output()}
+          </s.messageDiv>
+       
 
 
 
-      </s.MessageDiv>
-      <s.InputDiv>
-      <s.InputText type="text" placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
-      <s.InputUser type="text" placeholder='Username' required value={userText} onChange={(e) => setUserText(e.target.value)} />
-      <s.SendButton onClick={(e) => createMessage(messageText, userText)}> Send </s.SendButton>
+          <s.InputDiv>
+      <s.InputMessage  placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
+     
+      <s.Button onClick={(e) => createMessage(messageText)}> Send </s.Button>
       </s.InputDiv>
+      
+      </s.MessengerWindow>
+      
+      </s.MsnMessengerDiv>
       
       
       </> 

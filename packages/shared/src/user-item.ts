@@ -1,6 +1,7 @@
 
 
 export interface UserItem1 {
-    userName: string,
+    _id?: string,
+    username: string,
     password: string
 } 
