@@ -46,7 +46,7 @@ export const verifyUser = async (
     username: string,
     password: string
 ): Promise<UserItem | null> => {
-    const user = (await userModel.findOne({ username })) as unknown as UserItem;
+    const user = await userModel.findOne({ username }) as unknown as UserItem;
 
     return user && password && (await bcrypt.compare(password, user.password))
         ? user

@@ -8,7 +8,7 @@ export const createUser = async (req: Request, res: Response) => {
     // TODO: check required fields
     try {
         const user = await newUser(req.body)
-        console.log("USER", user)
+
     } catch (err) {
         console.error("ERR", err)
         res.status(409).json({ error: "User already exists" })

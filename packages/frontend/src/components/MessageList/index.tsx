@@ -2,6 +2,7 @@ import {MessageItem, UserItem} from '@my-fullstack-app/shared'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Logo from '../Logo'
 
 import * as s from './styles'
 
@@ -25,7 +26,7 @@ const fetchMessages =async (): Promise<MessageItem[]> => {
 
 const fetchMe =async (): Promise<UserItem | null> => {
   const response = await axios.get<UserItem>('/users/me')
-  console.log(response.data)
+ 
     return response.data
 }
 
@@ -86,23 +87,32 @@ export default function MessageList() {
        
        
 
-            <> 
+            < > 
 
            {item.username === userText?.username && 
 
-              <s.ItemDivGreen key={item._id} >
-              <s.H2  >{item.username}</s.H2>
-              <s.P>{item.messageText}</s.P>
-              </s.ItemDivGreen>
+              <s.UserMessage key={item._id} >
+                <s.DivRight>
+                <h2 >{item.username}</h2>
+              <p>{item.messageText}</p>
+              <s.Ptime>{item.timeStamp as any}</s.Ptime>
+                </s.DivRight>
+              
+              </s.UserMessage>
            
            }
            {item.username !== userText?.username && 
 
-              <s.ItemDiv key={item._id} >
-              <s.H2  >{item.username} </s.H2>
-              <s.P  >{item.messageText}</s.P>
+              <s.UserMessage1 key={item._id} >
+
+              <s.DivLeft>
+              <h2  >{item.username} </h2>
+              <p   >{item.messageText}</p>
+              <s.Ptime>{item.timeStamp as any}</s.Ptime>
+              </s.DivLeft>
               
-              </s.ItemDiv>
+              
+              </s.UserMessage1>
            
            }
             
@@ -124,18 +134,26 @@ export default function MessageList() {
   }
     return (
       
-      <><s.MessageDiv>
+      <><s.MsnMessengerDiv>
+        <s.MessengerWindow>
+        <s.Head><Logo/></s.Head>
+          <s.messageDiv>
 
-        {output()}
+          {output()}
+          </s.messageDiv>
+       
 
 
 
-      </s.MessageDiv>
-      <s.InputDiv>
-      <s.InputText type="text" placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
+          <s.InputDiv>
+      <s.InputMessage  placeholder='Message' value={messageText} onChange={(e) => setMessageText(e.target.value)} />
      
-      <s.SendButton onClick={(e) => createMessage(messageText)}> Send </s.SendButton>
+      <s.Button onClick={(e) => createMessage(messageText)}> Send </s.Button>
       </s.InputDiv>
+      
+      </s.MessengerWindow>
+      
+      </s.MsnMessengerDiv>
       
       
       </> 

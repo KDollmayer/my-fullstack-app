@@ -18,7 +18,7 @@ export const logInUser = async (req: Request, res: Response) => {
 
     try {
         const user = await verifyUser(username, password);
-        console.log(user)
+
 
         if (user) {
             const token = jwt.sign(

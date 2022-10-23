@@ -13,15 +13,18 @@ export default function HomePage() {
  
   return (
     
-     <MainContainer>
-      <Header  />
-      <MainContent>
+   
+      <MainContainer>
+
         <MessageList />
         
+
+      </MainContainer>
+      
+      
       
      
-    </MainContent>
-    </MainContainer>
+   
       
       
 
