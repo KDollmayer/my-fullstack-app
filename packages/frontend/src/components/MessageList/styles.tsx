@@ -25,7 +25,7 @@ export const DivLeft = styled.div`
 `
 export const Ptime = styled.p`
 font-size:10px;
-margin:;
+
 `
 
 
@@ -61,7 +61,7 @@ export const UserMessage = styled.div`
  display:flex;
  flex-direction:column;
  
- text-align:;
+
  justify-content: center; 
  float:right;
  justify-content:flex-end;
@@ -73,7 +73,7 @@ export const UserMessage1 = styled.div`
  
  display:flex;
  flex-direction:column;
- text-align:;
+ 
  justify-content: center; 
  justify-content:flex-start;
 

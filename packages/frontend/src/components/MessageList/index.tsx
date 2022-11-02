@@ -1,4 +1,5 @@
 import {MessageItem, UserItem} from '@my-fullstack-app/shared'
+
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -38,7 +39,7 @@ export default function MessageList() {
   const [userText, setUserText] = useState<UserItem | null>()
   const [messages, setMessages] = useState<MessageItem[]>([])
   const [error, setError] = useState<string | undefined>()
-  const navigate = useNavigate()
+  
   
 
   const waitingMessage: string = 'Waiting for messages...' 
@@ -59,13 +60,17 @@ export default function MessageList() {
   }
 
  
-  
+ 
   useEffect(() => {
-    fetchMe().then(setUserText).catch((error) => {
-      setUserText(null)
-      setError('Something went wrong with fetching user...')
+    setInterval(async () => { 
+      
+    
+    
+     fetchMe().then(setUserText).catch((error) => {
+       setUserText(null)
+       setError('Something went wrong with fetching user...')
 
-    })
+     })
     fetchMessages().then(setMessages).catch((error) => {
       setMessages([])
       setError('Something went wrong with fetching messages...')
@@ -74,6 +79,7 @@ export default function MessageList() {
      
 
     })
+  }, 3000)
   }, [])
 
  
@@ -82,6 +88,7 @@ export default function MessageList() {
     if (error) {
       return (<div> <h2>{error}</h2></div>)
     } else if (messages) {
+      
       return (<> {messages.map((item) => (
 
        
@@ -92,6 +99,7 @@ export default function MessageList() {
            {item.username === userText?.username && 
 
               <s.UserMessage key={item._id} >
+                
                 <s.DivRight>
                 <h2 >{item.username}</h2>
               <p>{item.messageText}</p>
@@ -104,8 +112,8 @@ export default function MessageList() {
            {item.username !== userText?.username && 
 
               <s.UserMessage1 key={item._id} >
-
-              <s.DivLeft>
+                            
+               <s.DivLeft>
               <h2  >{item.username} </h2>
               <p   >{item.messageText}</p>
               <s.Ptime>{item.timeStamp as any}</s.Ptime>
