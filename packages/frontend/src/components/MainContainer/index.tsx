@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import * as s from './styles'
+import * as s from "./styles";
 
-type Props = {children: React.ReactNode}
+type Props = { children: React.ReactNode };
 
-export default function MainContainer({children}: Props) {
-  return (
-    <s.Container>{children}</s.Container>
-  )
+export default function MainContainer({ children }: Props) {
+  return <s.Container>{children}</s.Container>;
 }

@@ -1,14 +1,13 @@
+import React from "react";
 
-import React from 'react'
+import * as s from "./styles";
 
-import * as s from './styles'
+type Props = { children: React.ReactNode };
 
-type Props = {children: React.ReactNode}
-
-export default function MainContent({children}: Props) {
+export default function MainContent({ children }: Props) {
   return (
     <s.Container>
       <s.ChatContainer>{children}</s.ChatContainer>
     </s.Container>
-  )
+  );
 }
